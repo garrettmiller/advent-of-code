@@ -1,0 +1,86 @@
+#!/usr/bin/python3
+"""
+--- Day 2: Cube Conundrum ---
+You're launched high into the atmosphere! The apex of your trajectory just barely reaches the surface of a large island floating in the sky. You gently land in a fluffy pile of leaves. It's quite cold, but you don't see much snow. An Elf runs over to greet you.
+
+The Elf explains that you've arrived at Snow Island and apologizes for the lack of snow. He'll be happy to explain the situation, but it's a bit of a walk, so you have some time. They don't get many visitors up here; would you like to play a game in the meantime?
+
+As you walk, the Elf shows you a small bag and some cubes which are either red, green, or blue. Each time you play this game, he will hide a secret number of cubes of each color in the bag, and your goal is to figure out information about the number of cubes.
+
+To get information, once a bag has been loaded with cubes, the Elf will reach into the bag, grab a handful of random cubes, show them to you, and then put them back in the bag. He'll do this a few times per game.
+
+You play several games and record the information from each game (your puzzle input). Each game is listed with its ID number (like the 11 in Game 11: ...) followed by a semicolon-separated list of subsets of cubes that were revealed from the bag (like 3 red, 5 green, 4 blue).
+
+For example, the record of a few games might look like this:
+
+Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
+Game 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue
+Game 3: 8 green, 6 blue, 20 red; 5 blue, 4 red, 13 green; 5 green, 1 red
+Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red
+Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green
+In game 1, three sets of cubes are revealed from the bag (and then put back again). The first set is 3 blue cubes and 4 red cubes; the second set is 1 red cube, 2 green cubes, and 6 blue cubes; the third set is only 2 green cubes.
+
+The Elf would first like to know which games would have been possible if the bag contained only 12 red cubes, 13 green cubes, and 14 blue cubes?
+
+In the example above, games 1, 2, and 5 would have been possible if the bag had been loaded with that configuration. However, game 3 would have been impossible because at one point the Elf showed you 20 red cubes at once; similarly, game 4 would also have been impossible because the Elf showed you 15 blue cubes at once. If you add up the IDs of the games that would have been possible, you get 8.
+
+Determine which games would have been possible if the bag had been loaded with only 12 red cubes, 13 green cubes, and 14 blue cubes. What is the sum of the IDs of those games?
+"""
+
+import re
+
+def extract_digits(input_string):  
+    num = re.findall(r'\d+', input_string) #find all digits in the string and put into list
+    num = ''.join(num) #collapse list into string
+    num = int(num) #turn sting into an integer
+    return(int(num)) #and return it 
+
+MAX_RED = 12
+MAX_GREEN = 13
+MAX_BLUE = 14
+
+sum = 0
+
+# Initialize a dictionary to store game data
+games_data = {}
+
+#Build a list of words
+with open("p02-input.txt", 'r') as file:
+    for line in file:
+        # Extract the game number using regular expression
+        game_number = int(re.search(r'Game (\d+)', line).group(1))
+
+        # Split the line into game title and trials
+        _, trials = line.split(': ')
+        trials = trials.strip().split('; ')
+
+        # Initialize a dictionary for each game
+        games_data[game_number] = []
+
+        # Process each trial
+        for trial in trials:
+            trial_data = {}
+            # Split the trial into color counts
+            colors = trial.split(', ')
+            for color in colors:
+                count, color_name = color.split(' ')
+                trial_data[color_name] = int(count)
+            games_data[game_number].append(trial_data)
+
+for game, trials in games_data.items():
+    gamePossible = True
+    for trial in trials:
+        for color, count in trial.items():
+            if (color == "red" and count > MAX_RED) or (color == "blue" and count > MAX_BLUE) or (color == "green" and count > MAX_GREEN):
+                print(f"Impossible game: {game}, {color}, {count}")
+                gamePossible = False
+                break
+    if gamePossible == True:
+        sum = sum + game #if we make it through, add it to sum
+
+print(f"The sum of game numbers of possible games is {sum}")
+
+
+# Examples of querying
+#print(games_data[1])  # Prints data for Game 1
+#print(games_data[1][0]['blue'])  # Prints count of blue in the first trial of Game 1
