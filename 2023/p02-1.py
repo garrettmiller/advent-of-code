@@ -38,7 +38,7 @@ sum = 0
 # Initialize a dictionary to store game data
 games_data = {}
 
-#Build a list of words
+#Build a list of games
 with open("p02-input.txt", 'r') as file:
     for line in file:
         # Extract the game number using regular expression
