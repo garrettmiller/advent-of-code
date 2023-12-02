@@ -29,12 +29,6 @@ Determine which games would have been possible if the bag had been loaded with o
 
 import re
 
-def extract_digits(input_string):  
-    num = re.findall(r'\d+', input_string) #find all digits in the string and put into list
-    num = ''.join(num) #collapse list into string
-    num = int(num) #turn sting into an integer
-    return(int(num)) #and return it 
-
 MAX_RED = 12
 MAX_GREEN = 13
 MAX_BLUE = 14
