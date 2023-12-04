@@ -37,7 +37,6 @@ Take a seat in the large pile of colorful cards. How many points are they worth 
 
 point_total = 0
 
-# Read the file (replace 'your_file.txt' with your file's name)
 with open('p04-input.txt', 'r') as file:
     for line in file:
         card_total = 0
@@ -51,11 +50,11 @@ with open('p04-input.txt', 'r') as file:
         # Parse integers before and after the '|'
         for x in parts[0].split():  # Split the first part (before the '|') into individual elements
             if x.isdigit():         # Check if the element is a digit
-                before_bar.append(int(x))  # Convert it to an integer and add to the before_list
+                before_bar.append(int(x))  # Convert it to an integer and add to the before_bar list
 
         for x in parts[1].split():  # Split the second part (after the '|') into individual elements
             if x.isdigit():         # Check if the element is a digit
-                after_bar.append(int(x))  # Convert it to an integer and add to the after_list
+                after_bar.append(int(x))  # Convert it to an integer and add to the after_bar list
 
         for number in after_bar:
             if number in before_bar:
