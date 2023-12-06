@@ -26,5 +26,3 @@ for hold_time in range(1,time):
         numWins = numWins +1
 
 print(f"The number of ways the record can be beaten is {numWins}")
-
-
