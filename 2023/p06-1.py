@@ -43,13 +43,17 @@ To see how much margin of error you have, determine the number of ways you can b
 Determine the number of ways you could beat the record in each race. What do you get if you multiply these numbers together?
 """
 
-#Test set
-times = [7, 15, 30]
-distances = [9, 40, 200]
+#problem input
+times = [44, 82, 69, 81]
+distances = [202, 1076, 1138, 1458]
 
-#Real problem input
-#times = [44, 82, 69, 81]
-#distances = [202, 1076, 1138, 1458]
+product = 1
 
-for time in times:
-    
+for index, time in enumerate(times):
+    numWins = 0
+    for hold_time in range(1,time):
+        if((hold_time * (time - hold_time))) > distances[index]:
+            numWins = numWins +1
+    product = product * numWins
+
+print(f"The product of ways the record can be beaten in each race is {product}")
