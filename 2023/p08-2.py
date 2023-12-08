@@ -33,6 +33,7 @@ So, in this example, you end up entirely on nodes that end in Z after 6 steps.
 Simultaneously start on every node that ends with A. How many steps does it take before you're only on nodes that end with Z?
 """
 
+import math #Use to find LCM
 
 def find_next_point(current_point, direction):
     for dict_item in list_of_dicts:
@@ -44,6 +45,8 @@ def find_next_point(current_point, direction):
             
 # List to hold first nodes ending with 'A'
 first_nodes = []
+# List to hold turns taken to find exit to get LCM
+turns_taken_list = []
 
 with open('p08-input.txt', 'r') as file:
     #read the first line
@@ -63,19 +66,17 @@ with open('p08-input.txt', 'r') as file:
             value = value.strip().strip('()').split(', ')
             list_of_dicts.append({key: value})
 
-done_flag = False
-turns_taken = 0
+for first_node in first_nodes:
+    current_point = first_node
+    turns_taken = 0
 
-#There are 6 nodes which end with A: [AAA, MGA, DGA, TLA, RDA, DPA]
-while done_flag == False: #Loop until we find it
-    print(f"Turns taken is {turns_taken}")
-    for char in instructions:
-        turns_taken += 1
-        for index, node in enumerate(first_nodes):
-            first_nodes[index] = find_next_point(first_nodes[index], char)
-        if all(item.endswith('Z') for item in first_nodes):
-            done_flag = True
-            break
-     
-# Output
-print(f"Current points are {first_nodes}, number of turns taken is {turns_taken}")
+    while current_point.endswith('Z') is False: #Loop until we find it
+        for char in instructions:
+            current_point = find_next_point(current_point, char)
+            print(f"Current point is {current_point}, direction is {char}")
+            turns_taken += 1
+            if current_point.endswith('Z'): #Break once we do
+                turns_taken_list.append(turns_taken)
+                break
+
+print(f"Nodes are {first_nodes}, turns taken for each are {turns_taken_list}, LCM is {math.lcm(*turns_taken_list)} ")
