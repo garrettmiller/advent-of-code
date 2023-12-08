@@ -68,14 +68,14 @@ turns_taken = 0
 
 #There are 6 nodes which end with A: [AAA, MGA, DGA, TLA, RDA, DPA]
 while done_flag == False: #Loop until we find it
+    print(f"Turns taken is {turns_taken}")
     for char in instructions:
         turns_taken += 1
         for index, node in enumerate(first_nodes):
             first_nodes[index] = find_next_point(first_nodes[index], char)
-            print(f"Current point for index {index} is {first_nodes[index]}, direction is {char}, turns taken is {turns_taken}")
         if all(item.endswith('Z') for item in first_nodes):
             done_flag = True
             break
      
 # Output
-print(f"Number of turns taken is {turns_taken}")
+print(f"Current points are {first_nodes}, number of turns taken is {turns_taken}")
