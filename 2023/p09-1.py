@@ -108,6 +108,10 @@ for row in data:
     nan_index = np.where(np.isnan(diff_matrix[-2]))[0][0]
 
     #For this NaN element, replace it with its value to the left
+    diff_matrix[-2][nan_index] = diff_matrix[-2][nan_index-1]
+    print(f"New diff matrix is:")
+    print(diff_matrix)
+    
     #Then for every OTHER first NaN element, it should be the sum of the value to the left, plus the value beneath it
 
 print(f"Sum of extrapolated values is {total_sum}")
