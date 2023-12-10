@@ -66,52 +66,45 @@ If you find the next value for each history in this example and add them togethe
 Analyze your OASIS report and extrapolate the next value for each history. What is the sum of these extrapolated values?
 """
 
-import numpy as np 
-
 total_sum = 0
 
-# import data from numpy
-data = np.loadtxt("p09-input.txt", dtype='int') 
+def calculate_differences(lst):
+    differences = []  # Initialize an empty list to store the differences
+    for i in range(len(lst) - 1):
+        diff = lst[i+1] - lst[i]  # Calculate the difference between adjacent elements
+        differences.append(diff)  # Append the difference to the differences list
+    return differences
 
-for row in data:
-    diff_list = [row]
-    # Determine the number of rows needed
-    num_rows = len(row) - 1
+# Open the file for reading
+with open('p09-input.txt', 'r') as file:
+  # Iterate over each line in the file
+  for line in file:
+    list_of_lists = []
+    current_list = []
 
-    # Iteratively calculate differences
-    while True:
-        # Compute the differences of the last row in the list
-        current_diff = np.diff(diff_list[-1])
+    # Split the line into elements
+    elements = line.split()
 
-        # Append the differences to the list
-        diff_list.append(current_diff)
+    # Convert each element from a string to an integer and add to the current list
+    for num in elements:
+      current_list.append(int(num))
 
-        # Break if the length of current_diff is 1 (cannot compute further differences)
-        if len(current_diff) == 1:
-            break
+    # Append the current list of integers to the main list
+    list_of_lists.append(current_list)
 
-        # Check if all elements in the current row are 0 (or NaN, but NaNs are not expected here)
-        if np.all(current_diff == 0):
-            break
+    next_difference = calculate_differences(list_of_lists[0])
+    list_of_lists.append(next_difference)
 
-    # Convert the list of arrays into a 2D array, filling with NaN for missing values
-    max_length = max(len(row) for row in diff_list)
-    diff_matrix = np.full((len(diff_list), max_length), np.nan)
+    # Generate difference sequences until all differences are zero
+    while not all(element == 0 for element in next_difference):
+      next_difference = calculate_differences(next_difference)
+      list_of_lists.append(next_difference)
 
-    for i, row in enumerate(diff_list):
-        diff_matrix[i, :len(row)] = row
+    # Calculate the next extrapolated value
+    for index in range(len(list_of_lists) - 1, 0, -1):
+        list_of_lists[index - 1].append(list_of_lists[index - 1][-1] + list_of_lists[index][-1])
 
-    print(f"Original table: ")
-    print(diff_matrix)
-
-    # Find the index of the first NaN element in the second to last row
-    nan_index = np.where(np.isnan(diff_matrix[-2]))[0][0]
-
-    #For this NaN element, replace it with its value to the left
-    diff_matrix[-2][nan_index] = diff_matrix[-2][nan_index-1]
-    print(f"New diff matrix is:")
-    print(diff_matrix)
-    
-    #Then for every OTHER first NaN element, it should be the sum of the value to the left, plus the value beneath it
+    # Add the last element of the current list to the total sum
+    total_sum += current_list[-1]
 
 print(f"Sum of extrapolated values is {total_sum}")
