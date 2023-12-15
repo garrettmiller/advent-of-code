@@ -66,7 +66,6 @@ Run the HASH algorithm on each step in the initialization sequence. What is the 
 """
 
 import csv
-import string 
 
 step_list = []
 sum = 0
