@@ -57,4 +57,4 @@ for i in range(len(list1)):
     similarityScore += list1[i] * count
 
 # Print the total distance
-print(f"The total distance between the two lists is: {similarityScore}")
+print(f"The total similarity score between the two lists is: {similarityScore}")
